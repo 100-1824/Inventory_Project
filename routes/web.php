@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 // Authentication Routes
@@ -21,4 +23,10 @@ Route::middleware('auth')->group(function () {
     // Sales Routes
     Route::get('/sales/search-products', [SaleController::class, 'searchProducts'])->name('sales.search');
     Route::resource('sales', SaleController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
+
+    // Expenses Routes
+    Route::resource('expenses', ExpenseController::class);
+
+    // Reports Routes
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });

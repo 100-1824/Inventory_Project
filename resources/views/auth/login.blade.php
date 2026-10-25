@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login - Unique Hardware</title>
-    
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --accent: #f472b6;
-            --accent-hover: #ec4899;
-            --bg-dark: #0f172a;
-            --bg-darker: #020617;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --border-color: rgba(148, 163, 184, 0.2);
-            --success: #22c55e;
-            --danger: #ef4444;
+            --primary: #546e7a;
+            --primary-dark: #37474f;
+            --primary-light: #b0bec5;
+            --accent: #ffb74d;
+            --accent-hover: #f57c00;
+            --bg-dark: #eceff1;
+            --bg-darker: #cfd8dc;
+            --text-primary: #263238;
+            --text-secondary: #546e7a;
+            --border-color: #cfd8dc;
+            --success: #81c784;
+            --danger: #e57373;
         }
 
         * {
@@ -52,7 +54,7 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 50%, #1e1b4b 100%);
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #b0bec5 100%);
         }
 
         .bg-animated::before {
@@ -62,7 +64,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+            background: radial-gradient(circle, rgba(96, 125, 139, 0.1) 0%, transparent 50%);
             animation: pulse 15s ease-in-out infinite;
         }
 
@@ -73,13 +75,20 @@
             right: -25%;
             width: 80%;
             height: 80%;
-            background: radial-gradient(circle, rgba(244, 114, 182, 0.08) 0%, transparent 50%);
+            background: radial-gradient(circle, rgba(255, 183, 77, 0.08) 0%, transparent 50%);
             animation: pulse 20s ease-in-out infinite reverse;
         }
 
         @keyframes pulse {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(5%, 5%) scale(1.1); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(5%, 5%) scale(1.1);
+            }
         }
 
         /* Floating shapes */
@@ -119,10 +128,23 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(20px, -20px) rotate(5deg); }
-            50% { transform: translate(-10px, 20px) rotate(-5deg); }
-            75% { transform: translate(-20px, -10px) rotate(3deg); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(20px, -20px) rotate(5deg);
+            }
+
+            50% {
+                transform: translate(-10px, 20px) rotate(-5deg);
+            }
+
+            75% {
+                transform: translate(-20px, -10px) rotate(3deg);
+            }
         }
 
         /* Login Card */
@@ -135,15 +157,15 @@
         }
 
         .login-card {
-            background: rgba(30, 41, 59, 0.7);
+            background: #ffffff;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(148, 163, 184, 0.1);
+            border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 48px 40px;
-            box-shadow: 
-                0 25px 50px -12px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            box-shadow:
+                0 25px 50px -12px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.5) inset;
         }
 
         /* Logo */
@@ -161,13 +183,20 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 40px rgba(96, 125, 139, 0.3);
             animation: logoGlow 3s ease-in-out infinite;
         }
 
         @keyframes logoGlow {
-            0%, 100% { box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3); }
-            50% { box-shadow: 0 10px 60px rgba(99, 102, 241, 0.5); }
+
+            0%,
+            100% {
+                box-shadow: 0 10px 40px rgba(96, 125, 139, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 10px 60px rgba(96, 125, 139, 0.5);
+            }
         }
 
         .logo-icon i {
@@ -220,7 +249,7 @@
 
         .form-control {
             width: 100%;
-            background: rgba(15, 23, 42, 0.6);
+            background: #f8fafc;
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 14px 16px 14px 48px;
@@ -237,12 +266,12 @@
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            background: rgba(15, 23, 42, 0.8);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(96, 125, 139, 0.15);
         }
 
-        .form-control:focus + .input-icon,
-        .form-control:focus ~ .input-icon {
+        .form-control:focus+.input-icon,
+        .form-control:focus~.input-icon {
             color: var(--primary);
         }
 
@@ -263,7 +292,7 @@
         .form-check-input {
             width: 18px;
             height: 18px;
-            background: rgba(15, 23, 42, 0.6);
+            background: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 5px;
             cursor: pointer;
@@ -310,7 +339,7 @@
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 10px 40px rgba(96, 125, 139, 0.4);
         }
 
         .btn-login:hover::before {
@@ -374,6 +403,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Animated Background -->
     <div class="bg-animated">
@@ -404,17 +434,12 @@
             <!-- Login Form -->
             <form method="POST" action="{{ route('login') }}">
                 @csrf
-                
+
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
                     <div class="input-group">
-                        <input type="email" 
-                               class="form-control" 
-                               name="email" 
-                               value="{{ old('email') }}" 
-                               placeholder="Enter your email"
-                               required 
-                               autofocus>
+                        <input type="email" class="form-control" name="email" value="{{ old('email') }}"
+                            placeholder="Enter your email" required autofocus>
                         <i class="bi bi-envelope input-icon"></i>
                     </div>
                 </div>
@@ -422,11 +447,8 @@
                 <div class="form-group">
                     <label class="form-label">Password</label>
                     <div class="input-group">
-                        <input type="password" 
-                               class="form-control" 
-                               name="password" 
-                               placeholder="Enter your password"
-                               required>
+                        <input type="password" class="form-control" name="password" placeholder="Enter your password"
+                            required>
                         <i class="bi bi-lock input-icon"></i>
                     </div>
                 </div>
@@ -454,4 +476,5 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

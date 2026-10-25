@@ -1,43 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Unique Hardware - Inventory Management</title>
-    
+    <title>Unique Hardware POS</title>
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <style>
+        /* Mid Theme - Blue Grey Palette */
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --accent: #f472b6;
-            --accent-hover: #ec4899;
-            --accent-glow: rgba(244, 114, 182, 0.4);
-            --bg-dark: #0f172a;
-            --bg-darker: #020617;
-            --bg-card: rgba(30, 41, 59, 0.7);
-            --bg-card-hover: rgba(51, 65, 85, 0.7);
-            --bg-card-solid: #1e293b;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --border-color: rgba(148, 163, 184, 0.15);
-            --border-hover: rgba(148, 163, 184, 0.3);
-            --success: #22c55e;
-            --success-glow: rgba(34, 197, 94, 0.3);
-            --warning: #eab308;
-            --warning-glow: rgba(234, 179, 8, 0.3);
-            --danger: #ef4444;
-            --danger-glow: rgba(239, 68, 68, 0.3);
-            --info: #06b6d4;
+            --primary: #546e7a;
+            /* Blue Grey 600 */
+            --primary-dark: #37474f;
+            /* Blue Grey 800 */
+            --primary-light: #b0bec5;
+            /* Blue Grey 200 */
+            --accent: #ffb74d;
+            /* Soft Orange */
+            --accent-hover: #f57c00;
+            --accent-glow: rgba(255, 183, 77, 0.4);
+
+            --bg-dark: #eceff1;
+            /* Blue Grey 50 - Mid Light Background */
+            --bg-darker: #cfd8dc;
+            /* Blue Grey 100 */
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --bg-card-solid: #ffffff;
+
+            --text-primary: #263238;
+            /* Blue Grey 900 - Mid Dark Text */
+            --text-secondary: #546e7a;
+            /* Blue Grey 600 */
+            --text-muted: #90a4ae;
+
+            --border-color: #cfd8dc;
+            --border-hover: #b0bec5;
+
+            --success: #81c784;
+            /* Soft Green */
+            --success-glow: rgba(129, 199, 132, 0.3);
+            --warning: #ffd54f;
+            /* Soft Yellow */
+            --warning-glow: rgba(255, 213, 79, 0.3);
+            --danger: #e57373;
+            /* Soft Red */
+            --danger-glow: rgba(229, 115, 115, 0.3);
+            --info: #64b5f6;
+            /* Soft Blue */
         }
 
         * {
@@ -45,7 +64,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 50%, #1e1b4b 100%);
+            background: #f1f5f9;
             min-height: 100vh;
             color: var(--text-primary);
             position: relative;
@@ -59,9 +78,9 @@
             right: -50%;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+            background: radial-gradient(circle, rgba(96, 125, 139, 0.05) 0%, transparent 50%);
             pointer-events: none;
-            animation: bgFloat 20s ease-in-out infinite;
+            animation: bgFloat 30s ease-in-out infinite;
         }
 
         body::after {
@@ -71,19 +90,26 @@
             left: -50%;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(244, 114, 182, 0.06) 0%, transparent 50%);
+            background: radial-gradient(circle, rgba(255, 183, 77, 0.04) 0%, transparent 50%);
             pointer-events: none;
-            animation: bgFloat 25s ease-in-out infinite reverse;
+            animation: bgFloat 35s ease-in-out infinite reverse;
         }
 
         @keyframes bgFloat {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(5%, 5%); }
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(5%, 5%);
+            }
         }
 
         /* Navbar */
         .navbar {
-            background: rgba(15, 23, 42, 0.85) !important;
+            background: #ffffff !important;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
@@ -109,12 +135,12 @@
         .navbar-brand .brand-icon {
             width: 42px;
             height: 42px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 15px rgba(96, 125, 139, 0.2);
         }
 
         .navbar-brand .brand-icon i {
@@ -134,12 +160,13 @@
 
         .nav-link:hover {
             color: var(--text-primary) !important;
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(96, 125, 139, 0.1);
+            /* Match primary */
         }
 
         .nav-link.active {
-            color: var(--primary-light) !important;
-            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary) !important;
+            background: rgba(96, 125, 139, 0.15);
         }
 
         .nav-link.active::after {
@@ -166,7 +193,7 @@
             align-items: center;
             gap: 10px;
             padding: 6px 12px;
-            background: rgba(99, 102, 241, 0.1);
+            background: #f1f5f9;
             border-radius: 10px;
             border: 1px solid var(--border-color);
         }
@@ -214,15 +241,15 @@
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
             border-radius: 20px;
-            box-shadow: 
-                0 4px 6px -1px rgba(0, 0, 0, 0.2),
-                0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+            box-shadow:
+                0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
             transition: all 0.3s ease;
         }
 
         .card:hover {
             border-color: var(--border-hover);
-            box-shadow: 
+            box-shadow:
                 0 10px 40px -10px rgba(0, 0, 0, 0.4),
                 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
         }
@@ -261,10 +288,9 @@
             transition: left 0.5s ease;
         }
 
-        .btn-accent:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-            color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(96, 125, 139, 0.4);
+        color: white;
         }
 
         .btn-accent:hover::before {
@@ -282,15 +308,16 @@
         }
 
         .btn-outline-light:hover {
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(96, 125, 139, 0.1);
             border-color: var(--primary);
-            color: var(--primary-light);
+            color: var(--primary);
             transform: translateY(-1px);
         }
 
         /* Form Controls */
-        .form-control, .form-select {
-            background: rgba(15, 23, 42, 0.6);
+        .form-control,
+        .form-select {
+            background: #ffffff;
             border: 1px solid var(--border-color);
             color: var(--text-primary);
             border-radius: 12px;
@@ -298,10 +325,11 @@
             transition: all 0.3s ease;
         }
 
-        .form-control:focus, .form-select:focus {
-            background: rgba(15, 23, 42, 0.8);
+        .form-control:focus,
+        .form-select:focus {
+            background: #ffffff;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 0 0 4px rgba(96, 125, 139, 0.1);
             color: var(--text-primary);
         }
 
@@ -322,7 +350,7 @@
         }
 
         .table thead th {
-            background: rgba(79, 70, 229, 0.15);
+            background: #f8fafc;
             color: var(--text-secondary);
             font-weight: 600;
             text-transform: uppercase;
@@ -338,7 +366,7 @@
         }
 
         .table tbody tr:hover {
-            background: rgba(99, 102, 241, 0.05);
+            background: #f1f5f9;
         }
 
         .table tbody td {
@@ -354,16 +382,47 @@
             font-weight: 500;
             font-size: 0.75rem;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            /* Default fallback for custom categories */
+            background: linear-gradient(135deg, #90a4ae, #607d8b);
+            color: #ffffff;
         }
 
-        .badge-hardware { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-        .badge-tools { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
-        .badge-sanitary { background: linear-gradient(135deg, #06b6d4, #0891b2); }
-        .badge-paint { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        /* Milder Category Badges */
+        .badge-hardware {
+            background: linear-gradient(135deg, #78909c, #546e7a);
+            /* Blue Grey */
+        }
+
+        .badge-tools {
+            background: linear-gradient(135deg, #9575cd, #7e57c2);
+            /* Muted Purple */
+        }
+
+        .badge-sanitary {
+            background: linear-gradient(135deg, #4dd0e1, #26c6da);
+            /* Cyan */
+        }
+
+        .badge-paint {
+            background: linear-gradient(135deg, #ffb74d, #ffa726);
+            /* Orange */
+        }
+
+        .badge-electrical {
+            background: linear-gradient(135deg, #fdd835, #fbc02d);
+            /* Yellow */
+            color: #374151;
+        }
+
+        .badge-plumbing {
+            background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+            /* Light Blue */
+        }
 
         /* Modal */
         .modal {
-            z-index: 1060; /* Above navbar and background animations */
+            z-index: 1060;
+            /* Above navbar and background animations */
         }
 
         .modal-backdrop {
@@ -430,7 +489,8 @@
 
         /* Stats Cards */
         .stat-card {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: #ffffff;
+            border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 1.5rem;
             border: none;
@@ -456,7 +516,7 @@
         }
 
         .stat-card.accent {
-            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            background: #ffffff;
         }
 
         .stat-card.accent:hover {
@@ -464,7 +524,7 @@
         }
 
         .stat-card.success {
-            background: linear-gradient(135deg, var(--success), #16a34a);
+            background: #ffffff;
         }
 
         .stat-card.success:hover {
@@ -472,7 +532,7 @@
         }
 
         .stat-card.warning {
-            background: linear-gradient(135deg, var(--warning), #ca8a04);
+            background: #ffffff;
         }
 
         .stat-card.warning:hover {
@@ -483,6 +543,7 @@
             font-size: 2rem;
             font-weight: 700;
             position: relative;
+            color: var(--text-primary);
         }
 
         .stat-label {
@@ -508,7 +569,7 @@
             padding-left: 2.75rem;
         }
 
-        .search-box input:focus + i,
+        .search-box input:focus+i,
         .search-box:focus-within i {
             color: var(--primary);
         }
@@ -553,36 +614,45 @@
         }
 
         .pagination .page-link:hover {
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(96, 125, 139, 0.1);
             border-color: var(--primary);
-            color: var(--primary-light);
+            color: var(--primary);
             transform: translateY(-2px);
         }
 
         .pagination .page-item.active .page-link {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-color: var(--primary);
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 15px rgba(96, 125, 139, 0.3);
         }
 
         /* Stock Status */
-        .stock-low { 
+        .stock-low {
             color: var(--danger);
             text-shadow: 0 0 10px var(--danger-glow);
         }
-        .stock-medium { 
+
+        .stock-medium {
             color: var(--warning);
             text-shadow: 0 0 10px var(--warning-glow);
         }
-        .stock-good { 
+
+        .stock-good {
             color: var(--success);
             text-shadow: 0 0 10px var(--success-glow);
         }
 
         /* Animation */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .fade-in {
@@ -629,30 +699,34 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg sticky-top">
-        <div class="container">
+        <div class="container-fluid px-4 px-lg-5">
             <a class="navbar-brand" href="{{ route('products.index') }}">
                 <div class="brand-icon">
                     <i class="bi bi-tools"></i>
                 </div>
-                <span>Unique Hardware</span>
+                <span>Unique Hardware POS</span>
             </a>
-            
+
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="bi bi-list text-white fs-4"></i>
+                <i class="bi bi-list text-primary fs-4"></i>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.index') }}">
+                    <a class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}"
+                        href="{{ route('products.index') }}">
                         <i class="bi bi-box-seam me-1"></i> Inventory
                     </a>
-                    <a class="nav-link {{ request()->routeIs('sales.create') ? 'active' : '' }}" href="{{ route('sales.create') }}">
+                    <a class="nav-link {{ request()->routeIs('sales.create') ? 'active' : '' }}"
+                        href="{{ route('sales.create') }}">
                         <i class="bi bi-cart-plus me-1"></i> New Sale (POS)
                     </a>
-                    <a class="nav-link {{ request()->routeIs('sales.index') ? 'active' : '' }}" href="{{ route('sales.index') }}">
+                    <a class="nav-link {{ request()->routeIs('sales.index') ? 'active' : '' }}"
+                        href="{{ route('sales.index') }}">
                         <i class="bi bi-receipt me-1"></i> Sales History
                     </a>
                 </div>
@@ -678,7 +752,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container py-4">
+    <main class="container-fluid px-4 px-lg-5 py-4">
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show fade-in" role="alert">
                 <i class="bi bi-check-circle-fill"></i>
@@ -690,7 +764,8 @@
         @if($errors->any())
             <div class="alert alert-danger alert-dismissible fade show fade-in" role="alert">
                 <div class="d-flex flex-column">
-                    <div class="fw-bold mb-1"><i class="bi bi-exclamation-octagon-fill me-2"></i>Please correct the following errors:</div>
+                    <div class="fw-bold mb-1"><i class="bi bi-exclamation-octagon-fill me-2"></i>Please correct the
+                        following errors:</div>
                     <ul class="mb-0 ps-3">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -714,7 +789,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     @yield('scripts')
 </body>
+
 </html>

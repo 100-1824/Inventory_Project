@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Sale extends Model
 {
-    protected $fillable = ['invoice_no', 'total_amount'];
+    protected $fillable = ['invoice_no', 'total_amount', 'customer_name', 'customer_phone'];
 
     public function items(): HasMany
     {
