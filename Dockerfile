@@ -44,4 +44,5 @@ EXPOSE 80
 # `php artisan migrate --force` manually if you'd rather control timing.
 CMD php artisan config:cache && php artisan route:cache && php artisan view:cache \
     && php artisan migrate --force \
+    && php artisan db:seed --class=DefaultAdminSeeder --force \
     && apache2-foreground
