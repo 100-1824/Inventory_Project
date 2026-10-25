@@ -20,11 +20,31 @@ class ProductController extends Controller
             ->search($search)
             ->category($category)
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(25)
+            ->withQueryString();
 
-        $categories = Product::CATEGORIES;
+        // Dynamic category list: whatever is actually in the table, plus the
+        // original defaults so they stay selectable even with zero products.
+        $categories = Product::query()
+            ->select('category')
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category')
+            ->merge(Product::CATEGORIES)
+            ->unique()
+            ->sort()
+            ->values();
 
-        return view('products.index', compact('products', 'categories', 'search', 'category'));
+        // Computed via dedicated queries against the whole table, not the
+        // current page's collection.
+        $totalProducts = Product::count();
+        $lowStockCount = Product::where('quantity', '<=', 10)->count();
+        $totalValue = Product::query()->selectRaw('COALESCE(SUM(price * quantity), 0) as total')->value('total');
+
+        return view('products.index', compact(
+            'products', 'categories', 'search', 'category',
+            'totalProducts', 'lowStockCount', 'totalValue'
+        ));
     }
 
     /**

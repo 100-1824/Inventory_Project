@@ -64,14 +64,14 @@ class SaleController extends Controller
     }
 
     /**
-     * Delete a sale.
+     * Delete a sale, restoring the stock that was sold.
      */
     public function destroy(Sale $sale)
     {
-        $sale->delete();
+        $this->saleService->voidSale($sale);
 
         return redirect()->route('sales.index')
-            ->with('success', 'Sale record deleted successfully!');
+            ->with('success', 'Sale record deleted and stock restored!');
     }
 
     /**

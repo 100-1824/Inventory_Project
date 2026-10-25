@@ -24,7 +24,7 @@ class UpdateProductRequest extends FormRequest
                 Rule::unique('products', 'sku')->ignore($this->route('product')),
             ],
             'description' => 'nullable|string',
-            'category' => ['required', Rule::in(Product::CATEGORIES)],
+            'category' => 'required|string|max:100',
             'rack_number' => 'nullable|string|max:50',
             'price' => 'required|numeric|min:0',
             'purchase_price' => 'required|numeric|min:0',

@@ -23,7 +23,7 @@ class SaleService
     {
         return DB::transaction(function () use ($items, $customerName, $customerPhone) {
             $sale = Sale::create([
-                'invoice_no' => 'INV-' . strtoupper(uniqid()),
+                'invoice_no' => $this->nextInvoiceNumber(),
                 'total_amount' => 0,
                 'customer_name' => $customerName,
                 'customer_phone' => $customerPhone,
@@ -54,6 +54,45 @@ class SaleService
             $sale->update(['total_amount' => $totalAmount]);
 
             return $sale;
+        });
+    }
+
+    /**
+     * Generate the next invoice number as a padded sequential value
+     * (INV-00001, INV-00002, ...) instead of uniqid(), which is based on
+     * microtime and is not guaranteed unique under concurrent requests.
+     * Locks the last row so concurrent sales can't read the same "next"
+     * number — caller must already be inside a DB transaction.
+     */
+    protected function nextInvoiceNumber(): string
+    {
+        $lastId = Sale::lockForUpdate()->orderByDesc('id')->value('id');
+
+        return 'INV-' . str_pad(($lastId ?? 0) + 1, 5, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Delete a sale and restore the stock that was taken for it.
+     *
+     * Previously, deleting a sale just removed the record — the quantities
+     * sold were never put back, so a mistaken or test sale permanently
+     * "lost" that stock from the system.
+     */
+    public function voidSale(Sale $sale): void
+    {
+        DB::transaction(function () use ($sale) {
+            $sale->load('items');
+
+            foreach ($sale->items as $item) {
+                $product = Product::lockForUpdate()->find($item->product_id);
+
+                // Product may have since been deleted; nothing to restore to.
+                if ($product) {
+                    $product->increment('quantity', $item->quantity);
+                }
+            }
+
+            $sale->delete();
         });
     }
 

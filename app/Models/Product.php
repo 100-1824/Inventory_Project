@@ -77,10 +77,13 @@ class Product extends Model
     // Search scope for filtering products
     public function scopeSearch($query, $search)
     {
+        if (!$search) {
+            return $query;
+        }
+
         return $query->where(function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%")
                 ->orWhere('sku', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%")
                 ->orWhere('supplier_name', 'like', "%{$search}%");
         });
     }

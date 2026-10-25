@@ -11,7 +11,7 @@
         </div>
         <div class="col-md-3">
             <div class="stat-card accent">
-                <div class="stat-number">{{ $products->where('quantity', '<=', 10)->count() }}</div>
+                <div class="stat-number">{{ $lowStockCount }}</div>
                 <div class="stat-label"><i class="bi bi-exclamation-triangle me-1"></i> Low Stock</div>
             </div>
         </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-md-3">
             <div class="stat-card warning">
-                <div class="stat-number">PKR {{ number_format($products->sum('price'), 0) }}</div>
+                <div class="stat-number">PKR {{ number_format($totalValue, 0) }}</div>
                 <div class="stat-label"><i class="bi bi-currency-dollar me-1"></i> Total Value</div>
             </div>
         </div>
