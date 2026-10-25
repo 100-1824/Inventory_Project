@@ -25,6 +25,14 @@ RUN composer dump-autoload --optimize --no-dev
 RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf \
     && sed -ri -e 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf
 
+# Debian's default apache2.conf sets AllowOverride None for /var/www/, which
+# makes Laravel's public/.htaccess rewrite rules (needed for every route
+# except "/") silently do nothing, producing Apache's own 404 instead of
+# reaching index.php. Allow overrides for the webroot explicitly.
+RUN printf '<Directory /var/www/html/public>\n\tAllowOverride All\n\tRequire all granted\n</Directory>\n' \
+    > /etc/apache2/conf-available/laravel-htaccess.conf \
+    && a2enconf laravel-htaccess
+
 # Writable dirs Laravel needs at runtime
 RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
