@@ -29,9 +29,4 @@ Route::middleware('auth')->group(function () {
 
     // Reports Routes
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-
-    // TEMPORARY: one-off product catalogue import. Remove this route along
-    // with AdminImportController and database/imports/ALL_PRODUCTS_IMPORT.sql
-    // once it has been run successfully.
-    Route::get('/admin/run-import', [\App\Http\Controllers\AdminImportController::class, 'run']);
 });
