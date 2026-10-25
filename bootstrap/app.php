@@ -11,7 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Render terminates SSL at its edge and proxies to the container
+        // over plain HTTP, setting X-Forwarded-Proto: https. Without
+        // trusting that header, Laravel thinks every request is HTTP and
+        // generates insecure http:// links for route()/url()/forms, which
+        // is why the browser flagged the category filter form as insecure.
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
